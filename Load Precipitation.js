@@ -1,3 +1,4 @@
+var chirps = ee.ImageCollection("UCSB-CHG/CHIRPS/PENTAD"), malawi = ee.FeatureCollection("users/jkafotokoza/Malawi");
 // Search for CHIRPS prentad data and load it
 
 // Filter to Year 2017 data
