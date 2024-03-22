@@ -1,3 +1,5 @@
+// code for Land Cover Classification
+
 var admin1 = ee.FeatureCollection("FAO/GAUL_SIMPLIFIED_500m/2015/level1");
 
 var Dominica = admin1.filter(ee.Filter.eq('ADM0_NAME', 'Dominica'));
