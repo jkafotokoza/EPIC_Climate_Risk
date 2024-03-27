@@ -75,6 +75,29 @@ var visualization = {
 };
 Map.addLayer(grasslandOnly, visualization, 'Grassland');
 
+//Tree cover
+var treecover_value = 10;
+var treecoverMask = land_cover.eq(treecover_value);
+var treecoverOnly = treecoverMask.updateMask(treecoverMask);
+var visualization = {
+  min: 0,
+  max: 1, 
+  palette: ['#006400']
+};
+Map.addLayer(treecoverOnly, visualization, 'Tree cover');
+
+//Mangroves
+var mangroves_value = 95;
+var mangrovesMask = land_cover.eq(mangroves_value);
+var mangrovesOnly = mangrovesMask.updateMask(mangrovesMask);
+var visualization = {
+  min: 0,
+  max: 1,
+  palette: ['#00cf75']
+};
+Map.addLayer(mangrovesOnly, visualization, 'Mangroves')
+
+
 
 // Elevation
 
@@ -113,3 +136,25 @@ var visParams = {
 
 // Add the single-band, masked layer to the map with visualization parameters
 Map.addLayer(coralOnly, visParams, 'Coral Extent');
+
+// Chlorophyll concentration (possible proxy for ocean producitivity)
+var chlorophyll = ee.ImageCollection('JAXA/GCOM-C/L3/OCEAN/CHLA/V3')
+                .filterDate('2021-12-01', '2022-01-01')
+                // filter to daytime data only
+                .filter(ee.Filter.eq('SATELLITE_DIRECTION', 'D'));
+
+// Multiply with slope coefficient
+var image = chlorophyll.mean().multiply(0.0016).log10();
+
+var vis = {
+  bands: ['CHLA_AVE'],
+  min: -2,
+  max: 2,
+  palette: [
+    '3500a8','0800ba','003fd6',
+    '00aca9','77f800','ff8800',
+    'b30000','920000','880000'
+  ]
+};
+Map.addLayer(image, vis, 'Chlorophyll-a concentration');
+
