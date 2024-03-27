@@ -77,3 +77,5 @@ var elevationMask = elevation.lte(10);
 // Apply the mask to the elevation data
 var filteredElevation = elevation.updateMask(elevationMask);
 Map.addLayer(filteredElevation, {min: 0, max: 10, palette: ['0000FF', '00FFFF']}, 'Low Elevation');
+
+ciao 
