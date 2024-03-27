@@ -64,6 +64,18 @@ Map.addLayer(croplandOnly, visualization, 'Cropland');
 print(croplandOnly);
 
 
+//Grassland
+var grassland_value = 30;
+var grasslandMask = land_cover.eq(grassland_value);
+var grasslandOnly = grasslandMask.updateMask(grasslandMask);
+var visualization = {
+  min: 0,
+  max: 1,
+  palette: ['#ffff4c'] // Display cropland as yellow.
+};
+Map.addLayer(grasslandOnly, visualization, 'Grassland');
+
+
 // Elevation
 
 var elev = ee.Image('CGIAR/SRTM90_V4');
@@ -78,4 +90,26 @@ var elevationMask = elevation.lte(10);
 var filteredElevation = elevation.updateMask(elevationMask);
 Map.addLayer(filteredElevation, {min: 0, max: 10, palette: ['0000FF', '00FFFF']}, 'Low Elevation');
 
-ciao 
+// coral reef
+
+var data_coral = ee.Image('ACA/reef_habitat/v2_0');
+
+// Select the relevant band from your image that contains the habitat information.
+var coralBand = data_coral.select('benthic'); 
+
+// Assuming '15' represents coral habitats
+var coralValue = 15;
+
+// Create a mask where coral habitats are represented by '15'
+var coralMask = coralBand.eq(coralValue);
+
+// Apply the mask to the selected band to keep only coral habitats
+var coralOnly = coralBand.updateMask(coralMask);
+
+// Define visualization parameters including the palette for the single-band image
+var visParams = {
+    palette: ['FF0000'] // Cyan color for coral
+};
+
+// Add the single-band, masked layer to the map with visualization parameters
+Map.addLayer(coralOnly, visParams, 'Coral Extent');
